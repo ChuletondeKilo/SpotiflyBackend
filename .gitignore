@@ -2,6 +2,7 @@
 .uv/
 __pypackages__/
 .venv/
+.env
 
 # general Python
 *.pyc
