@@ -1,5 +1,3 @@
-from src.app.domain.models import (CreatePlaylistRequest, artistsSongsCollection)
-from random import sample
 from spotipy import Spotify
 from .schema import ArtistSchema, SongTrackSchema, SongCollectionSchema
 

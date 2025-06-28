@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from src.app.infrastructure.routes.v1.playlist import playlist
 from src.app.infrastructure.routes.v1.login import login
 
-load_dotenv()
 
 # Core Application Instance
 app = FastAPI(

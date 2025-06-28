@@ -3,6 +3,8 @@
 __pypackages__/
 .venv/
 .env
+.cache
+.vscode/
 
 # general Python
 *.pyc

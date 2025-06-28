@@ -8,5 +8,6 @@ dependencies = [
     "fastapi",
     "python-dotenv",
     "starlette",
-    "spotipy"
+    "spotipy",
+    "debugpy"
 ]
