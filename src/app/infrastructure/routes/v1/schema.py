@@ -14,3 +14,8 @@ class createPlaylistRequest(BaseSchema):
     """
     artist: str = Field(..., description="List of artist IDs")
     playlist_name: str = Field(..., description="Name of the playlist")
+
+class AuthCallbackResponseSchema(BaseModel):
+    session_id: str
+    user_id: str
+    display_name: str | None = None

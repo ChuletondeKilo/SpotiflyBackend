@@ -1,21 +1,22 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import RedirectResponse
 import common as app_common
 from .common import *
 from spotipy import SpotifyOAuth, Spotify
 from src.app.domain.spotify.models import *
-from src.app.infrastructure.external.spotify.schema import SpotifyUserSchema, AccessTokenSchema, UserSessionSchema
+from src.app.infrastructure.external.spotify.schema import *
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta
 from uuid import uuid4
+from .schema import *
 
 login = APIRouter(
     prefix='/v1/login', tags=['login']
 )
 
 @login.get("/main")
-async def initial_login():
+async def log_in_user():
 
     auth_manager = SpotifyOAuth(**app_common.SPOTIFY_CONFIG)
     auth_url = auth_manager.get_authorize_url()
@@ -74,4 +75,21 @@ async def callback(request: Request, db: Session = Depends(get_db)):
     db.commit()
 
     # Optional: return a success page or session_id
-    return {"message": "Authentication successful", "session_id": new_session.session_id}
+    return AuthCallbackResponseSchema(
+        session_id=new_session.session_id,
+        user_id=db_user.id,
+        display_name=db_user.display_name
+    )
+
+@login.delete("/logout/{user_id}")
+async def log_off_user(user_id: str, db: Session = Depends(get_db)):
+    user = db.query(SpotifyUser).filter(SpotifyUser.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Delete all sessions (and tokens via cascade)
+    num_deleted = db.query(UserSession).filter(UserSession.user_id == user_id).delete()
+    db.commit()
+
+    return {"message": f"All sessions deleted for user {user_id}.", "sessions_removed": num_deleted}
