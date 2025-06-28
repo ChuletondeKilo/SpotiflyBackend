@@ -1,0 +1,12 @@
+[project]
+name = "spotifly"
+version = "0.1.0"
+dependencies = [
+    "pydantic",
+    "typing",
+    "fastapi[standard]",
+    "fastapi",
+    "python-dotenv",
+    "starlette",
+    "spotipy"
+]
