@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-
+from datetime import datetime
 from ..common import BaseSchema
 
 
@@ -35,3 +35,29 @@ class SongCollectionSchema(BaseSchema):
         """
         return [song.id for song in self.items]
 
+class SpotifyUserSchema(BaseModel):
+    id: str
+    display_name: str | None = None
+
+    class Config:
+        orm_mode = True
+
+class UserSessionSchema(BaseModel):
+    session_id: str
+    user_id: str
+    created_at: datetime
+    last_active_at: datetime
+
+    class Config:
+        orm_mode = True
+
+class AccessTokenSchema(BaseModel):
+    session_id: str
+    access_token: str
+    refresh_token: str | None = None
+    token_type: str = "Bearer"
+    scope: str | None = None
+    expires_at: datetime
+
+    class Config:
+        orm_mode = True

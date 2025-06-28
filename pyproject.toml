@@ -9,5 +9,7 @@ dependencies = [
     "python-dotenv",
     "starlette",
     "spotipy",
-    "debugpy"
+    "debugpy",
+    "sqlalchemy",
+    "psycopg2-binary"
 ]
